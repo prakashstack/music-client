@@ -5,7 +5,7 @@ import {
   nextSong, prevSong, setVolume, toggleMute, setIsPlaying,
   toggleShuffle, cycleRepeat, playSong,
 } from '../store/playerSlice';
-import { historyService } from '../services/api';
+import { historyService, musicApiBaseUrl } from '../services/api';
 import type { Song } from '../types';
 
 export const audioRef = { current: new Audio() };
@@ -22,8 +22,9 @@ export const usePlayer = () => {
   useEffect(() => {
     const audio = audioRef.current;
     if (!player.currentSong) return;
-    const streamUrl = `/api/music/stream/${encodeURIComponent(player.currentSong.id)}`;
-    if (audio.src !== streamUrl) {
+    const streamUrl = `${musicApiBaseUrl}/music/stream/${encodeURIComponent(player.currentSong.id)}`;
+    const resolvedStreamUrl = new URL(streamUrl, window.location.origin).href;
+    if (audio.src !== resolvedStreamUrl) {
       audio.dataset.streamFallbackAttempted = 'true';
       audio.src = streamUrl;
       audio.load();
@@ -51,7 +52,7 @@ export const usePlayer = () => {
     const handleTimeUpdate = () => dispatch(setProgress(audio.currentTime));
     const handleDurationChange = () => dispatch(setDuration(audio.duration || 0));
     const handleError = () => {
-      const fallbackUrl = `/api/music/stream/${encodeURIComponent(player.currentSong?.id || '')}`;
+      const fallbackUrl = `${musicApiBaseUrl}/music/stream/${encodeURIComponent(player.currentSong?.id || '')}`;
       if (audio.dataset.streamFallbackAttempted !== 'true' && audio.src !== fallbackUrl) {
         audio.dataset.streamFallbackAttempted = 'true';
         audio.src = fallbackUrl;

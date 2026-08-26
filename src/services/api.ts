@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const apiOrigin = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
+export const musicApiBaseUrl = `${apiOrigin}/api`;
 
 const api = axios.create({
-  baseURL: `${apiOrigin}/api`,
+  baseURL: musicApiBaseUrl,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
