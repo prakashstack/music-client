@@ -13,7 +13,7 @@ export const LoginPage = () => {
   }, [isAuthenticated, navigate]);
 
   const handleGoogleLogin = () => {
-    window.location.replace('/auth/google');
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
 
   const features = [

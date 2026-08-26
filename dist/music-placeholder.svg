@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="Music placeholder">
+  <rect width="600" height="600" fill="#FFF8C7"/>
+  <circle cx="300" cy="300" r="170" fill="#FFDE21"/>
+  <path d="M360 195v205c0 42-36 75-80 75-39 0-70-22-70-52s31-52 70-52c14 0 27 3 38 9V239l-140 35v149c0 42-36 75-80 75-39 0-70-22-70-52s31-52 70-52c14 0 27 3 38 9V229l224-56z" transform="translate(70 0)" fill="#1A1A1A"/>
+</svg>
