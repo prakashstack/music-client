@@ -30,7 +30,15 @@ export const SongCard = ({ song, queue, variant = 'grid', index }: SongCardProps
     // the selected song before playback instead of using a short preview URL.
     try {
       const fullSong = await musicService.getSong(song.id) as Song;
-      const playableSong = fullSong?.downloadUrl?.length ? fullSong : song;
+      const playableSong = fullSong?.downloadUrl?.length
+        ? {
+            ...song,
+            ...fullSong,
+            image: fullSong.image?.length ? fullSong.image : song.image,
+            artists: fullSong.artists || song.artists,
+            album: fullSong.album || song.album,
+          }
+        : song;
       const nextQueue = (queue || [song]).map((queuedSong) =>
         queuedSong.id === song.id ? playableSong : queuedSong
       );
