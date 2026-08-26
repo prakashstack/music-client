@@ -24,11 +24,9 @@ export const authAPI = {
   logout: () => api.post('/auth/logout'),
 };
 
-// Fix auth calls to use /auth prefix
-const authAxios = axios.create({ baseURL: '/auth', withCredentials: true });
 export const authService = {
-  getMe: () => authAxios.get('/me').then((r) => r.data.data),
-  logout: () => authAxios.post('/logout').then((r) => r.data),
+  getMe: () => api.get('/auth/me').then((r) => r.data.data),
+  logout: () => api.post('/auth/logout').then((r) => r.data),
 };
 
 // Music

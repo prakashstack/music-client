@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import axios from 'axios'
 import { Toaster } from 'react-hot-toast'
 import './index.css'
 import App from './App.tsx'
@@ -11,7 +12,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
-      retry: 2,
+      retry: (failureCount, error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 429) return false;
+        return failureCount < 2;
+      },
     },
   },
 })
