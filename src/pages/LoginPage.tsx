@@ -13,7 +13,12 @@ export const LoginPage = () => {
   }, [isAuthenticated, navigate]);
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+    const apiOrigin = import.meta.env.VITE_API_URL?.replace(/\/$/, '');
+    if (!apiOrigin) {
+      console.error('VITE_API_URL is not configured.');
+      return;
+    }
+    window.location.assign(`${apiOrigin}/api/auth/google`);
   };
 
   const features = [
