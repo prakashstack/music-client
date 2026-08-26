@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAppDispatch } from './hooks/useAppDispatch';
 import { fetchCurrentUser } from './store/authSlice';
 import { fetchFavorites } from './store/favoritesSlice';
@@ -20,20 +20,22 @@ const PageLoader = () => (
   </div>
 );
 
-function App() {
+function AppContent() {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname === '/login') return;
+
     dispatch(fetchCurrentUser()).then((action) => {
       if (action.meta.requestStatus === 'fulfilled') {
         dispatch(fetchFavorites());
       }
     });
-  }, [dispatch]);
+  }, [dispatch, location.pathname]);
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/"
@@ -52,7 +54,14 @@ function App() {
           <Route path="profile" element={<Suspense fallback={<PageLoader />}><ProfilePage /></Suspense>} />
         </Route>
         <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
